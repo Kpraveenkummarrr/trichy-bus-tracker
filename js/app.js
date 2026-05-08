@@ -1,10 +1,34 @@
 // ============================================
 // TRICHY BUS TRACKER - MAIN APP
 // ============================================
+// ============================================
+// TRICHY BUS TRACKER - MAIN APP
+// ============================================
+
+// Wait for data to be available
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if data is loaded
+    if (typeof trichyData === 'undefined') {
+        console.error('❌ trichyData not loaded! Check js/data.js');
+        return;
+    }
+    
+    console.log('✅ App initialized with', trichyData.stops.length, 'stops and', trichyData.routes.length, 'routes');
+    
+    // Initialize autocomplete
+    setupAutocomplete('sourceInput', 'sourceSuggestions');
+    setupAutocomplete('destinationInput', 'destinationSuggestions');
+    
+    // Load initial routes
+    loadRoutes();
+    loadTrackingBusList();
+});
 
 let currentTab = 'search';
 let selectedBusId = null;
 let isListening = false;
+
+// Rest of your app.js code...
 
 // Switch sidebar tabs
 function switchTab(tab) {
@@ -272,8 +296,20 @@ function trackRoute(routeNumber) {
 }
 
 // Load routes list
+// Load routes list
 function loadRoutes() {
+    // Safety check
+    if (typeof trichyData === 'undefined' || !trichyData.routes) {
+        console.error('❌ Cannot load routes - data not available');
+        return;
+    }
+    
     const routesList = document.getElementById('routesList');
+    if (!routesList) {
+        console.error('❌ routesList element not found');
+        return;
+    }
+    
     routesList.innerHTML = trichyData.routes.map(route => `
         <div class="bus-item" onclick="showBusDetails('${route.number}')">
             <div class="bus-header">

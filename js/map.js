@@ -10,8 +10,18 @@ let heatmapLayer;
 let activeBusDetails = {};
 let selectedRoute = null;
 
-// Initialize Map
+// Initialize Map - WITH SAFETY CHECK
 function initMap() {
+    // Check if trichyData is loaded
+    if (typeof trichyData === 'undefined') {
+        console.error('❌ trichyData not loaded! Make sure js/data.js is loaded first.');
+        setTimeout(initMap, 500); // Retry after 500ms
+        return;
+    }
+    
+    console.log('✅ trichyData loaded successfully');
+    console.log('📍 Initializing map with center:', trichyData.center);
+    
     map = L.map('trichyMap').setView(trichyData.center, 13);
     
     // OpenStreetMap tiles
@@ -31,10 +41,9 @@ function initMap() {
     
     // Refresh buses every 10 seconds
     setInterval(updateLiveBuses, 10000);
-    
-    // Center map controls
-    map.addControl(L.control.zoom({ position: 'topright' }));
 }
+
+// Rest of your map.js code remains the same...
 
 // Add bus stops as markers
 function addBusStops() {
