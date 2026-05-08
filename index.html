@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trichy Smart Bus Tracker - திருச்சி பஸ் டிராக்கர்</title>
     
-    <!-- Bootstrap 5 -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Leaflet Map -->
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
@@ -38,7 +38,7 @@
         /* NAVIGATION */
         .navbar {
             background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
-            padding: 12px 0;
+            padding: 10px 0;
             box-shadow: 0 2px 20px rgba(0,0,0,0.3);
             position: sticky;
             top: 0;
@@ -46,26 +46,21 @@
         }
 
         .navbar-brand {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: white !important;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .navbar-brand img {
-            width: 40px;
-            height: 40px;
+            gap: 8px;
         }
 
         .nav-link {
             color: rgba(255,255,255,0.85) !important;
             font-weight: 500;
-            margin: 0 5px;
-            padding: 8px 16px !important;
+            padding: 8px 14px !important;
             border-radius: 8px;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
 
         .nav-link:hover, .nav-link.active {
@@ -77,15 +72,20 @@
             background: rgba(255,255,255,0.15);
             color: white;
             border: 1px solid rgba(255,255,255,0.3);
-            padding: 6px 16px;
+            padding: 5px 14px;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.3s;
         }
 
-        .language-btn:hover {
+        .language-btn:hover, .language-btn.active {
             background: rgba(255,255,255,0.25);
+        }
+
+        .language-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
         }
 
         /* LIVE INDICATOR */
@@ -97,9 +97,8 @@
             color: #DC3545;
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            animation: pulse 2s infinite;
         }
 
         .live-dot {
@@ -115,23 +114,16 @@
             50% { opacity: 0.3; }
         }
 
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(220,53,69,0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(220,53,69,0); }
-        }
-
         /* MAIN LAYOUT */
         .main-container {
             display: flex;
-            height: calc(100vh - 70px);
-            gap: 0;
+            height: calc(100vh - 56px);
         }
 
-        /* MAP CONTAINER */
+        /* MAP */
         .map-container {
             flex: 1;
             position: relative;
-            background: #e8e8e8;
         }
 
         #trichyMap {
@@ -139,7 +131,7 @@
             height: 100%;
         }
 
-        /* MAP OVERLAY CONTROLS */
+        /* MAP CONTROLS */
         .map-controls {
             position: absolute;
             top: 15px;
@@ -147,18 +139,18 @@
             z-index: 999;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .map-control-btn {
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             background: white;
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -170,12 +162,7 @@
             transform: scale(1.05);
         }
 
-        .map-control-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* LIVE STATS BAR */
+        /* LIVE STATS */
         .live-stats-bar {
             position: absolute;
             bottom: 15px;
@@ -183,46 +170,45 @@
             right: 15px;
             z-index: 999;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .stat-badge {
             background: white;
-            border-radius: 12px;
-            padding: 10px 16px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 8px 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
-            min-width: 150px;
+            min-width: 130px;
         }
 
-        .stat-badge i {
-            font-size: 1.5rem;
-        }
+        .stat-badge i { font-size: 1.3rem; }
 
         .stat-info h6 {
             margin: 0;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #666;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .stat-info span {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--dark);
         }
 
         /* SIDEBAR */
         .sidebar {
-            width: 420px;
+            width: 400px;
             background: white;
             display: flex;
             flex-direction: column;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.08);
             z-index: 998;
         }
 
@@ -233,11 +219,11 @@
 
         .sidebar-tab {
             flex: 1;
-            padding: 16px 10px;
+            padding: 14px 8px;
             border: none;
             background: none;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             cursor: pointer;
             color: #999;
             transition: all 0.3s;
@@ -252,8 +238,8 @@
             content: '';
             position: absolute;
             bottom: -2px;
-            left: 20%;
-            right: 20%;
+            left: 15%;
+            right: 15%;
             height: 3px;
             background: var(--primary);
             border-radius: 3px;
@@ -262,37 +248,30 @@
         .sidebar-tab i {
             display: block;
             font-size: 1.2rem;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .sidebar-content {
             flex: 1;
             overflow-y: auto;
-            padding: 0;
         }
 
         .tab-content {
             display: none;
-            padding: 20px;
+            padding: 18px;
         }
 
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content.active { display: block; }
 
-        /* SEARCH FORM */
-        .search-form {
-            margin-bottom: 20px;
-        }
-
+        /* SEARCH */
         .search-input-group {
             position: relative;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
-        .search-input-group i {
+        .search-input-group > i {
             position: absolute;
-            left: 15px;
+            left: 14px;
             top: 50%;
             transform: translateY(-50%);
             color: #999;
@@ -301,94 +280,45 @@
 
         .search-input-group input {
             width: 100%;
-            padding: 14px 15px 14px 45px;
+            padding: 12px 14px 12px 42px;
             border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 0.95rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
             transition: all 0.3s;
             background: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
         }
 
         .search-input-group input:focus {
             outline: none;
             border-color: var(--primary);
             background: white;
-            box-shadow: 0 0 0 4px rgba(0,102,204,0.1);
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
         }
 
         .voice-search-btn {
             position: absolute;
-            right: 10px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
             color: #FF6600;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            padding: 5px;
-            transition: all 0.3s;
+            padding: 6px;
         }
 
-        .voice-search-btn:hover {
-            color: #FF3300;
-            transform: translateY(-50%) scale(1.2);
-        }
-
-        .voice-search-btn.listening {
-            animation: pulse 1s infinite;
-            color: #DC3545;
-        }
-
-        .suggestions-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            z-index: 1000;
-            display: none;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .suggestions-dropdown.show {
-            display: block;
-        }
-
-        .suggestion-item {
-            padding: 12px 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .suggestion-item:hover {
-            background: #f8f9fa;
-        }
-
-        .suggestion-item i {
-            color: var(--primary);
-        }
-
-        .suggestion-item small {
-            color: #999;
-            margin-left: auto;
-        }
+        .voice-search-btn:hover { color: #FF3300; }
 
         .btn-search {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             background: linear-gradient(135deg, #0066CC, #004999);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -396,15 +326,15 @@
 
         .btn-search:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,102,204,0.4);
+            box-shadow: 0 8px 25px rgba(0,102,204,0.35);
         }
 
-        /* BUS LIST */
+        /* BUS ITEMS */
         .bus-item {
             background: white;
             border: 2px solid #f0f0f0;
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 14px;
             margin-bottom: 10px;
             cursor: pointer;
             transition: all 0.3s;
@@ -412,195 +342,114 @@
 
         .bus-item:hover {
             border-color: var(--primary);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transform: translateX(5px);
-        }
-
-        .bus-item.selected {
-            border-color: var(--primary);
-            background: #f0f7ff;
-        }
-
-        .bus-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
         .bus-route-number {
             background: var(--primary);
             color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 3px 10px;
+            border-radius: 15px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .bus-eta {
             color: var(--success);
             font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .bus-eta.delayed {
-            color: var(--danger);
+            font-size: 0.85rem;
         }
 
         .bus-details {
             display: flex;
-            gap: 15px;
-            font-size: 0.85rem;
+            gap: 12px;
+            font-size: 0.8rem;
             color: #666;
-        }
-
-        .bus-details i {
-            margin-right: 4px;
-            color: var(--primary);
+            margin-top: 6px;
+            flex-wrap: wrap;
         }
 
         .crowd-indicator {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.75rem;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.73rem;
             font-weight: 600;
         }
 
-        .crowd-low {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .crowd-medium {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .crowd-high {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* BUS ROUTE PATH */
-        .route-path {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-top: 10px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            font-size: 0.8rem;
-        }
-
-        .route-stops {
-            flex: 1;
-        }
-
-        .route-stop {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 3px 0;
-        }
-
-        .stop-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ccc;
-            flex-shrink: 0;
-        }
-
-        .stop-dot.current {
-            background: var(--success);
-            box-shadow: 0 0 0 4px rgba(40,167,69,0.2);
-            animation: pulse 2s infinite;
-        }
-
-        .stop-dot.upcoming {
-            background: var(--primary);
-        }
+        .crowd-low { background: #d4edda; color: #155724; }
+        .crowd-medium { background: #fff3cd; color: #856404; }
+        .crowd-high { background: #f8d7da; color: #721c24; }
 
         /* ALERTS */
         .alert-item {
             display: flex;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            gap: 10px;
+            padding: 11px;
+            border-radius: 8px;
+            margin-bottom: 8px;
             border-left: 4px solid;
+            font-size: 0.85rem;
         }
 
-        .alert-item.warning {
-            background: #fff3cd;
-            border-color: #FFC107;
-        }
+        .alert-item.warning { background: #fff3cd; border-color: #FFC107; }
+        .alert-item.info { background: #d1ecf1; border-color: #17A2B8; }
+        .alert-item.danger { background: #f8d7da; border-color: #DC3545; }
+        .alert-item.success { background: #d4edda; border-color: #28A745; }
 
-        .alert-item.info {
-            background: #d1ecf1;
-            border-color: #17A2B8;
-        }
-
-        .alert-item.danger {
-            background: #f8d7da;
-            border-color: #DC3545;
-        }
-
-        .alert-item.success {
-            background: #d4edda;
-            border-color: #28A745;
-        }
-
-        /* BOOKING MODAL */
-        .modal-content {
-            border-radius: 20px;
-            border: none;
-        }
-
+        /* MODAL */
         .ticket-visual {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 12px;
+            padding: 22px;
             color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ticket-visual::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        }
-
-        .qr-code {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            display: inline-block;
         }
 
         /* RESPONSIVE */
         @media (max-width: 992px) {
             .main-container { flex-direction: column; }
-            .map-container { height: 50vh; }
-            .sidebar { width: 100%; height: 50vh; }
-            .live-stats-bar { flex-wrap: wrap; }
-            .stat-badge { min-width: 120px; }
+            .map-container { height: 45vh; }
+            .sidebar { width: 100%; height: 55vh; }
         }
 
         @media (max-width: 576px) {
             .navbar-brand { font-size: 1rem; }
-            .sidebar-tab { font-size: 0.7rem; padding: 10px 5px; }
-            .stat-badge { padding: 8px 10px; }
+            .sidebar-tab { font-size: 0.68rem; padding: 10px 4px; }
+            .stat-badge { min-width: 100px; padding: 6px 10px; }
         }
+
+        /* Suggestions */
+        .suggestions-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .suggestions-dropdown.show { display: block; }
+
+        .suggestion-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .suggestion-item:hover { background: #f8f9fa; }
+        .suggestion-item i { color: var(--primary); }
+        .suggestion-item small { color: #999; margin-left: auto; }
     </style>
 </head>
 <body>
@@ -611,14 +460,12 @@
         <a class="navbar-brand" href="#">
             🚌 Trichy Smart Bus
         </a>
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2">
             <span class="live-indicator">
                 <span class="live-dot"></span> LIVE
             </span>
-            <div class="btn-group">
-                <button class="language-btn active" onclick="switchLanguage('en')">EN</button>
-                <button class="language-btn" onclick="switchLanguage('ta')">தமிழ்</button>
-            </div>
+            <button class="language-btn active" id="btnEN" onclick="switchLang('en')">EN</button>
+            <button class="language-btn" id="btnTA" onclick="switchLang('ta')">தமிழ்</button>
             <button class="btn btn-light btn-sm rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#loginModal">
                 <i class="bi bi-person-circle"></i> Login
             </button>
@@ -633,51 +480,28 @@
     <div class="map-container">
         <div id="trichyMap"></div>
         
-        <!-- Map Controls -->
         <div class="map-controls">
-            <button class="map-control-btn" onclick="centerMap()" title="Center Map">
-                <i class="bi bi-crosshair"></i>
-            </button>
-            <button class="map-control-btn" onclick="toggleTraffic()" title="Traffic Layer">
-                <i class="bi bi-car-front"></i>
-            </button>
-            <button class="map-control-btn" onclick="toggleHeatmap()" title="Bus Density">
-                <i class="bi bi-fire"></i>
-            </button>
-            <button class="map-control-btn" id="refreshBtn" onclick="refreshBuses()" title="Refresh">
-                <i class="bi bi-arrow-clockwise"></i>
-            </button>
+            <button class="map-control-btn" onclick="centerMap()" title="Center Map"><i class="bi bi-crosshair"></i></button>
+            <button class="map-control-btn" onclick="toggleTraffic()" title="Traffic"><i class="bi bi-car-front"></i></button>
+            <button class="map-control-btn" onclick="refreshBuses()" title="Refresh">⟳</button>
         </div>
 
-        <!-- Live Stats -->
         <div class="live-stats-bar">
             <div class="stat-badge">
                 <i class="bi bi-bus-front text-primary"></i>
-                <div class="stat-info">
-                    <h6>Active Buses</h6>
-                    <span id="activeBuses">48</span>
-                </div>
+                <div class="stat-info"><h6>Active Buses</h6><span id="activeBuses">-</span></div>
             </div>
             <div class="stat-badge">
                 <i class="bi bi-people text-success"></i>
-                <div class="stat-info">
-                    <h6>Passengers</h6>
-                    <span id="passengerCount">2,450</span>
-                </div>
+                <div class="stat-info"><h6>Passengers</h6><span id="passengerCount">-</span></div>
             </div>
             <div class="stat-badge">
                 <i class="bi bi-clock text-warning"></i>
-                <div class="stat-info">
-                    <h6>On Time</h6>
-                    <span id="onTimePercent">94%</span>
-                </div>
+                <div class="stat-info"><h6>On Time</h6><span id="onTimePercent">-</span></div>
             </div>
             <div class="stat-badge">
                 <i class="bi bi-exclamation-triangle text-danger"></i>
-                <div class="stat-info">
-                    <h6>Delays</h6>
-                    <span id="delayCount">3</span>
-                </div>
+                <div class="stat-info"><h6>Delays</h6><span id="delayCount">-</span></div>
             </div>
         </div>
     </div>
@@ -685,18 +509,10 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-tabs">
-            <button class="sidebar-tab active" onclick="switchTab('search')">
-                <i class="bi bi-search"></i> Find Bus
-            </button>
-            <button class="sidebar-tab" onclick="switchTab('routes')">
-                <i class="bi bi-signpost-2"></i> Routes
-            </button>
-            <button class="sidebar-tab" onclick="switchTab('alerts')">
-                <i class="bi bi-bell"></i> Alerts
-            </button>
-            <button class="sidebar-tab" onclick="switchTab('tracking')">
-                <i class="bi bi-geo-alt"></i> Live
-            </button>
+            <button class="sidebar-tab active" onclick="switchTab('search')"><i class="bi bi-search"></i> Find Bus</button>
+            <button class="sidebar-tab" onclick="switchTab('routes')"><i class="bi bi-signpost-2"></i> Routes</button>
+            <button class="sidebar-tab" onclick="switchTab('alerts')"><i class="bi bi-bell"></i> Alerts</button>
+            <button class="sidebar-tab" onclick="switchTab('tracking')"><i class="bi bi-geo-alt"></i> Live</button>
         </div>
 
         <div class="sidebar-content">
@@ -704,52 +520,36 @@
             <div class="tab-content active" id="searchTab">
                 <h5 class="fw-bold mb-3">🔍 Find Your Bus</h5>
                 
-                <form class="search-form" onsubmit="searchBuses(event)">
+                <div class="search-form">
                     <div class="search-input-group">
                         <i class="bi bi-geo-alt-fill text-success"></i>
-                        <input type="text" id="sourceInput" placeholder="Enter source stop..." autocomplete="off">
-                        <button type="button" class="voice-search-btn" onclick="startVoiceSearch('source')" title="Voice Search">
-                            <i class="bi bi-mic"></i>
-                        </button>
+                        <input type="text" id="sourceInput" placeholder="From (Source Stop)..." autocomplete="off">
+                        <button class="voice-search-btn" onclick="simulateVoice('source')" title="Voice Search">🎤</button>
                         <div class="suggestions-dropdown" id="sourceSuggestions"></div>
                     </div>
                     
                     <div class="text-center my-2">
-                        <button type="button" class="btn btn-outline-secondary rounded-circle" onclick="swapStops()" title="Swap">
-                            <i class="bi bi-arrow-down-up"></i>
-                        </button>
+                        <button class="btn btn-outline-secondary rounded-circle btn-sm" onclick="swapStops()">⇅</button>
                     </div>
                     
                     <div class="search-input-group">
                         <i class="bi bi-geo-alt-fill text-danger"></i>
-                        <input type="text" id="destinationInput" placeholder="Enter destination stop..." autocomplete="off">
-                        <button type="button" class="voice-search-btn" onclick="startVoiceSearch('destination')" title="Voice Search">
-                            <i class="bi bi-mic"></i>
-                        </button>
+                        <input type="text" id="destinationInput" placeholder="To (Destination Stop)..." autocomplete="off">
+                        <button class="voice-search-btn" onclick="simulateVoice('dest')" title="Voice Search">🎤</button>
                         <div class="suggestions-dropdown" id="destinationSuggestions"></div>
                     </div>
                     
-                    <button type="submit" class="btn-search">
-                        <i class="bi bi-search me-2"></i> Search Buses
+                    <button class="btn-search" onclick="searchBuses()">
+                        <i class="bi bi-search me-1"></i> Search Buses
                     </button>
-                </form>
-
-                <div class="mt-3">
-                    <small class="text-muted fw-semibold">🚏 Popular Stops:</small>
-                    <div class="mt-2">
-                        <span class="badge bg-light text-dark me-1 mb-1" style="cursor:pointer" onclick="quickSelect('Chatram Bus Stand')">Chatram</span>
-                        <span class="badge bg-light text-dark me-1 mb-1" style="cursor:pointer" onclick="quickSelect('Central Bus Stand')">Central</span>
-                        <span class="badge bg-light text-dark me-1 mb-1" style="cursor:pointer" onclick="quickSelect('Srirangam')">Srirangam</span>
-                        <span class="badge bg-light text-dark me-1 mb-1" style="cursor:pointer" onclick="quickSelect('Thillai Nagar')">Thillai Nagar</span>
-                        <span class="badge bg-light text-dark me-1 mb-1" style="cursor:pointer" onclick="quickSelect('Woraiyur')">Woraiyur</span>
-                        <span class="badge bg-light text-dark me-1 mb-1" style="cursor:pointer" onclick="quickSelect('Airport')">Airport</span>
-                        <span class="badge bg-light text-dark me-1 mb-1" style="cursor:pointer" onclick="quickSelect('BHEL')">BHEL</span>
-                        <span class="badge bg-light text-dark me-1 mb-1" style="cursor:pointer" onclick="quickSelect('K.K. Nagar')">K.K. Nagar</span>
-                    </div>
                 </div>
 
-                <!-- Search Results -->
-                <div id="searchResults" class="mt-4"></div>
+                <div class="mt-3">
+                    <small class="text-muted fw-semibold">🚏 Quick Stops:</small>
+                    <div class="mt-2" id="quickStops"></div>
+                </div>
+
+                <div id="searchResults" class="mt-3"></div>
             </div>
 
             <!-- ROUTES TAB -->
@@ -761,60 +561,14 @@
             <!-- ALERTS TAB -->
             <div class="tab-content" id="alertsTab">
                 <h5 class="fw-bold mb-3">🔔 Live Alerts</h5>
-                <div id="alertsList">
-                    <div class="alert-item warning">
-                        <i class="bi bi-exclamation-triangle fs-4 text-warning"></i>
-                        <div>
-                            <strong>Route 1 Delay</strong>
-                            <p class="mb-0 small">Due to traffic near Central Bus Stand. Expected delay: 10 mins</p>
-                            <small class="text-muted">2 mins ago</small>
-                        </div>
-                    </div>
-                    <div class="alert-item info">
-                        <i class="bi bi-info-circle fs-4 text-info"></i>
-                        <div>
-                            <strong>New Route Added</strong>
-                            <p class="mb-0 small">Route 128A: Srirangam to Airport via Thillai Nagar</p>
-                            <small class="text-muted">1 hour ago</small>
-                        </div>
-                    </div>
-                    <div class="alert-item success">
-                        <i class="bi bi-check-circle fs-4 text-success"></i>
-                        <div>
-                            <strong>Festival Special</strong>
-                            <p class="mb-0 small">Extra buses for Vaikunta Ekadasi at Srirangam Temple</p>
-                            <small class="text-muted">3 hours ago</small>
-                        </div>
-                    </div>
-                    <div class="alert-item danger">
-                        <i class="bi bi-cloud-rain fs-4 text-danger"></i>
-                        <div>
-                            <strong>Weather Alert</strong>
-                            <p class="mb-0 small">Heavy rain expected. Buses may be delayed by 15-20 mins</p>
-                            <small class="text-muted">30 mins ago</small>
-                        </div>
-                    </div>
-                </div>
+                <div id="alertsList"></div>
             </div>
 
-            <!-- LIVE TRACKING TAB -->
+            <!-- TRACKING TAB -->
             <div class="tab-content" id="trackingTab">
-                <h5 class="fw-bold mb-3">📍 Live Bus Tracking</h5>
+                <h5 class="fw-bold mb-3">📍 Live Tracking</h5>
                 <div id="trackingBusList"></div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- BUS DETAILS MODAL -->
-<div class="modal fade" id="busDetailModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold" id="busModalTitle">Bus Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="busModalBody"></div>
         </div>
     </div>
 </div>
@@ -822,12 +576,12 @@
 <!-- BOOKING MODAL -->
 <div class="modal fade" id="bookingModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content rounded-4 border-0">
             <div class="modal-header border-0">
                 <h5 class="modal-title fw-bold">🎫 Book Ticket</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body" id="bookingModalBody"></div>
+            <div class="modal-body p-4" id="bookingModalBody"></div>
         </div>
     </div>
 </div>
@@ -837,10 +591,10 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 border-0">
             <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold">Login</h5>
+                <h5 class="modal-title fw-bold">🔐 Login</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 text-center">
                 <div class="mb-3">
                     <label class="form-label">Phone Number</label>
                     <div class="input-group">
@@ -849,24 +603,422 @@
                     </div>
                 </div>
                 <button class="btn btn-primary w-100 rounded-pill">Send OTP</button>
+                <p class="text-muted small mt-3 mb-0">Demo Mode - Click to simulate login</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Scripts - ORDER MATTERS! -->
-<!-- 1. External Libraries First -->
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<!-- 2. Data must load BEFORE map and app -->
-<script src="js/data.js"></script>
+<script>
+// ============================================
+// ALL DATA - BUILT INLINE
+// ============================================
 
-<!-- 3. Map depends on data -->
-<script src="js/map.js"></script>
+const stops = [
+    { id: 1, name: 'Chatram Bus Stand', tamil: 'சத்திரம் பஸ் நிலையம்', lat: 10.8275, lng: 78.6950, landmark: 'Main Bus Stand' },
+    { id: 2, name: 'Central Bus Stand', tamil: 'சென்ட்ரல் பஸ் நிலையம்', lat: 10.7905, lng: 78.7047, landmark: 'Near Railway Station' },
+    { id: 3, name: 'Srirangam', tamil: 'ஸ்ரீரங்கம்', lat: 10.8627, lng: 78.6946, landmark: 'Ranganathaswamy Temple' },
+    { id: 4, name: 'Thillai Nagar', tamil: 'தில்லை நகர்', lat: 10.8100, lng: 78.6850, landmark: 'Shopping District' },
+    { id: 5, name: 'Woraiyur', tamil: 'வறையூர்', lat: 10.8270, lng: 78.6700, landmark: 'Old Trichy Area' },
+    { id: 6, name: 'Airport', tamil: 'விமான நிலையம்', lat: 10.7654, lng: 78.7050, landmark: 'Trichy International Airport' },
+    { id: 7, name: 'BHEL', tamil: 'பெல்', lat: 10.7900, lng: 78.7800, landmark: 'BHEL Township' },
+    { id: 8, name: 'K.K. Nagar', tamil: 'கே.கே. நகர்', lat: 10.8050, lng: 78.6950, landmark: 'Residential Area' },
+    { id: 9, name: 'Tiruvanaikovil', tamil: 'திருவானைக்காவில்', lat: 10.8530, lng: 78.7050, landmark: 'Jambukeswarar Temple' },
+    { id: 10, name: 'Manachanallur', tamil: 'மணச்சநல்லூர்', lat: 10.8900, lng: 78.6900, landmark: 'Town' },
+    { id: 11, name: 'Samayapuram', tamil: 'சமயபுரம்', lat: 10.8900, lng: 78.7350, landmark: 'Mariamman Temple' },
+    { id: 12, name: 'Ponmalaipatti', tamil: 'பொன்மலைப்பட்டி', lat: 10.7600, lng: 78.7100, landmark: 'Industrial Area' },
+    { id: 13, name: 'Palakkarai', tamil: 'பாளக்கரை', lat: 10.8150, lng: 78.7000, landmark: 'Market Area' },
+    { id: 14, name: 'Butterworth Road', tamil: 'பட்டர்வொர்த் சாலை', lat: 10.8000, lng: 78.6900, landmark: 'Commercial Street' },
+    { id: 15, name: 'Crawford', tamil: 'கிராபோர்டு', lat: 10.8200, lng: 78.6850, landmark: 'Colony' },
+    { id: 16, name: 'Subramaniapuram', tamil: 'சுப்பிரமணியபுரம்', lat: 10.7950, lng: 78.6750, landmark: 'Residential' },
+    { id: 17, name: 'Thiruverumbur', tamil: 'திருவெறும்பூர்', lat: 10.7800, lng: 78.7400, landmark: 'Industrial' },
+    { id: 18, name: 'Golden Rock', tamil: 'கோல்டன் ராக்', lat: 10.7850, lng: 78.7300, landmark: 'Railway Colony' }
+];
 
-<!-- 4. App depends on both data and map -->
-<script src="js/app.js"></script>
+const routes = [
+    { number: '1', name: 'Srirangam - Central - Airport', color: '#0066CC', stops: [3,9,1,2,4,8,6], freq: '10 min', hours: '5AM-11PM', type: 'Ordinary', crowd: 'medium' },
+    { number: '12', name: 'Chatram - BHEL', color: '#FF6600', stops: [1,2,18,17,7], freq: '15 min', hours: '5:30AM-10:30PM', type: 'Ordinary', crowd: 'high' },
+    { number: '27', name: 'Central - Samayapuram', color: '#28A745', stops: [2,1,3,10,11], freq: '20 min', hours: '6AM-10PM', type: 'Deluxe', crowd: 'low' },
+    { number: '59', name: 'Woraiyur - Airport', color: '#DC3545', stops: [5,15,13,4,8,6], freq: '12 min', hours: '5AM-11PM', type: 'Ordinary', crowd: 'medium' },
+    { number: '63', name: 'Chatram - Thiruverumbur', color: '#FFC107', stops: [1,2,18,17], freq: '25 min', hours: '6AM-9:30PM', type: 'Ordinary', crowd: 'high' },
+    { number: '128A', name: 'Srirangam - Airport Express', color: '#6F42C1', stops: [3,4,6], freq: '30 min', hours: '6:30AM-9PM', type: 'AC Deluxe', crowd: 'low' },
+    { number: 'A1', name: 'Airport - Central Express', color: '#17A2B8', stops: [6,12,2], freq: '15 min', hours: '24 Hours', type: 'AC Volvo', crowd: 'low' }
+];
+
+// ============================================
+// MAP FUNCTIONS
+// ============================================
+
+let map;
+let busLayer;
+let trafficLayer;
+let activeBuses = [];
+
+function initMap() {
+    console.log('🗺️ Initializing Trichy Map...');
+    
+    map = L.map('trichyMap').setView([10.7905, 78.7047], 13);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap | Trichy Smart Bus Tracker',
+        maxZoom: 18
+    }).addTo(map);
+    
+    // Add bus stop markers
+    stops.forEach(stop => {
+        const marker = L.circleMarker([stop.lat, stop.lng], {
+            radius: 6,
+            fillColor: '#0066CC',
+            color: '#fff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 1
+        }).addTo(map);
+        
+        marker.bindPopup(`<b>🚏 ${stop.name}</b><br><small>${stop.tamil}</small><br>📍 ${stop.landmark}`);
+    });
+    
+    // Add route lines
+    routes.forEach(route => {
+        const coords = route.stops.map(sid => {
+            const s = stops.find(x => x.id === sid);
+            return [s.lat, s.lng];
+        });
+        
+        L.polyline(coords, {
+            color: route.color,
+            weight: 4,
+            opacity: 0.5,
+            dashArray: route.type.includes('Express') ? '10,10' : null
+        }).addTo(map);
+    });
+    
+    updateBuses();
+    setInterval(updateBuses, 8000);
+    
+    console.log('✅ Map initialized!');
+}
+
+function updateBuses() {
+    if (busLayer) map.removeLayer(busLayer);
+    busLayer = L.layerGroup().addTo(map);
+    activeBuses = [];
+    
+    routes.forEach(route => {
+        const count = Math.floor(Math.random() * 4) + 2;
+        for (let i = 0; i < count; i++) {
+            const stopIdx = Math.floor(Math.random() * route.stops.length);
+            const stop = stops.find(s => s.id === route.stops[stopIdx]);
+            const lat = stop.lat + (Math.random() - 0.5) * 0.004;
+            const lng = stop.lng + (Math.random() - 0.5) * 0.004;
+            const crowdLevels = ['low','medium','high'];
+            const crowd = crowdLevels[Math.floor(Math.random() * 3)];
+            
+            const bus = {
+                id: `${route.number}-${i+1}`,
+                route: route,
+                stop: stop,
+                lat: lat,
+                lng: lng,
+                crowd: crowd,
+                eta: Math.floor(Math.random() * 12) + 2,
+                delayed: Math.random() < 0.2,
+                delayMin: Math.floor(Math.random() * 15) + 5,
+                speed: Math.floor(Math.random() * 25) + 10,
+                passengers: Math.floor(Math.random() * 35) + 5
+            };
+            activeBuses.push(bus);
+            
+            const icon = L.divIcon({
+                html: `<div style="background:${route.color};color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);">${route.number}</div>`,
+                iconSize: [32,32],
+                className: ''
+            });
+            
+            const marker = L.marker([lat, lng], {icon}).addTo(busLayer);
+            
+            marker.bindPopup(`
+                <div style="font-family:Poppins,sans-serif;min-width:200px;">
+                    <b style="background:${route.color};color:white;padding:3px 10px;border-radius:12px;">Route ${route.number}</b>
+                    <p style="margin:5px 0;"><b>${route.name}</b></p>
+                    <p>📍 Now: <b>${stop.name}</b></p>
+                    <p>⏱️ Next stop in: <b>${bus.eta} min</b></p>
+                    <p>👥 Crowd: <b>${crowd.toUpperCase()}</b></p>
+                    ${bus.delayed ? '<p style="color:red;">⚠️ Delayed '+bus.delayMin+' min</p>' : ''}
+                    <button onclick="bookTicket(\'${bus.id}\')" style="background:#28A745;color:white;border:none;padding:6px 14px;border-radius:15px;cursor:pointer;font-size:12px;">🎫 Book Now</button>
+                </div>
+            `);
+        }
+    });
+    
+    // Update stats
+    document.getElementById('activeBuses').textContent = activeBuses.length;
+    document.getElementById('passengerCount').textContent = activeBuses.reduce((s,b) => s + b.passengers, 0).toLocaleString();
+    document.getElementById('delayCount').textContent = activeBuses.filter(b => b.delayed).length;
+    document.getElementById('onTimePercent').textContent = Math.round((1 - activeBuses.filter(b => b.delayed).length / activeBuses.length) * 100) + '%';
+    
+    // Update tracking list if visible
+    if (document.getElementById('trackingTab').classList.contains('active')) {
+        updateTrackingList();
+    }
+}
+
+function centerMap() {
+    map.setView([10.7905, 78.7047], 13);
+}
+
+function toggleTraffic() {
+    if (trafficLayer) {
+        map.removeLayer(trafficLayer);
+        trafficLayer = null;
+        return;
+    }
+    trafficLayer = L.layerGroup().addTo(map);
+    
+    // Add traffic hotspots
+    const hotspots = [
+        {lat:10.7905,lng:78.7047,name:'Central Junction',color:'#DC3545'},
+        {lat:10.8100,lng:78.6850,name:'Thillai Nagar',color:'#FFC107'},
+        {lat:10.8275,lng:78.6950,name:'Chatram Circle',color:'#FFC107'},
+    ];
+    
+    hotspots.forEach(h => {
+        L.circle([h.lat,h.lng], {radius:250, color:h.color, fillOpacity:0.15, weight:2}).addTo(trafficLayer);
+    });
+}
+
+function refreshBuses() {
+    updateBuses();
+    const btn = event.target;
+    btn.style.transform = 'rotate(360deg)';
+    btn.style.transition = 'transform 0.6s';
+    setTimeout(() => { btn.style.transform = ''; }, 600);
+}
+
+// ============================================
+// APP FUNCTIONS
+// ============================================
+
+function switchTab(tab) {
+    document.querySelectorAll('.sidebar-tab').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById(tab + 'Tab').classList.add('active');
+    
+    if (tab === 'routes') loadRoutes();
+    if (tab === 'alerts') loadAlerts();
+    if (tab === 'tracking') updateTrackingList();
+}
+
+function searchBuses() {
+    const srcVal = document.getElementById('sourceInput').value.trim();
+    const dstVal = document.getElementById('destinationInput').value.trim();
+    const resultsDiv = document.getElementById('searchResults');
+    
+    if (!srcVal || !dstVal) {
+        resultsDiv.innerHTML = '<p class="text-muted text-center py-3">Please enter both stops</p>';
+        return;
+    }
+    
+    const srcStop = stops.find(s => s.name.toLowerCase().includes(srcVal.toLowerCase()) || s.tamil.includes(srcVal));
+    const dstStop = stops.find(s => s.name.toLowerCase().includes(dstVal.toLowerCase()) || s.tamil.includes(dstVal));
+    
+    if (!srcStop || !dstStop) {
+        resultsDiv.innerHTML = '<p class="text-muted text-center py-3">Stop not found. Try: Chatram, Central, Srirangam</p>';
+        return;
+    }
+    
+    const matching = routes.filter(r => {
+        const si = r.stops.indexOf(srcStop.id);
+        const di = r.stops.indexOf(dstStop.id);
+        return si !== -1 && di !== -1 && di > si;
+    });
+    
+    if (matching.length === 0) {
+        resultsDiv.innerHTML = '<p class="text-muted text-center py-3">No direct bus. Try different stops.</p>';
+        return;
+    }
+    
+    resultsDiv.innerHTML = `<h6 class="fw-bold">🚌 ${matching.length} bus(es): ${srcStop.name} → ${dstStop.name}</h6>` +
+        matching.map(r => {
+            const stopsBetween = r.stops.indexOf(dstStop.id) - r.stops.indexOf(srcStop.id);
+            const fare = 10 + stopsBetween * 5;
+            return `
+            <div class="bus-item" onclick="focusRoute('${r.number}')">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="bus-route-number" style="background:${r.color}">Route ${r.number}</span>
+                    <span class="crowd-indicator crowd-${r.crowd}">👥 ${r.crowd.toUpperCase()}</span>
+                </div>
+                <div class="mt-1"><strong>${r.name}</strong></div>
+                <div class="bus-details">
+                    <span><i class="bi bi-clock"></i> ${r.freq}</span>
+                    <span>💰 ₹${fare}</span>
+                    <span>🚍 ${r.type}</span>
+                </div>
+                <div class="mt-2 text-end">
+                    <button class="btn btn-sm btn-success rounded-pill" onclick="event.stopPropagation();bookTicket('${r.number}')">🎫 Book ₹${fare}</button>
+                </div>
+            </div>`;
+        }).join('');
+}
+
+function focusRoute(routeNum) {
+    const route = routes.find(r => r.number === routeNum);
+    if (!route) return;
+    const firstStop = stops.find(s => s.id === route.stops[0]);
+    map.setView([firstStop.lat, firstStop.lng], 14);
+}
+
+function loadRoutes() {
+    const div = document.getElementById('routesList');
+    div.innerHTML = routes.map(r => `
+        <div class="bus-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="bus-route-number" style="background:${r.color}">${r.number}</span>
+                <span class="bus-eta">Every ${r.freq}</span>
+            </div>
+            <strong class="mt-1 d-block">${r.name}</strong>
+            <div class="bus-details">
+                <span><i class="bi bi-bus"></i> ${r.type}</span>
+                <span><i class="bi bi-clock"></i> ${r.hours}</span>
+            </div>
+            <span class="crowd-indicator crowd-${r.crowd} mt-1">👥 ${r.crowd.toUpperCase()}</span>
+        </div>
+    `).join('');
+}
+
+function loadAlerts() {
+    document.getElementById('alertsList').innerHTML = `
+        <div class="alert-item warning"><i class="bi bi-exclamation-triangle fs-5 text-warning"></i><div><strong>Route 1 Delay</strong><p class="mb-0 small">Traffic near Central Stand. +10 min</p><small class="text-muted">2 mins ago</small></div></div>
+        <div class="alert-item info"><i class="bi bi-info-circle fs-5 text-info"></i><div><strong>New Route 128A</strong><p class="mb-0 small">Srirangam to Airport Express service</p><small class="text-muted">1 hour ago</small></div></div>
+        <div class="alert-item success"><i class="bi bi-calendar-check fs-5 text-success"></i><div><strong>Festival Special</strong><p class="mb-0 small">Extra buses for temple festival</p><small class="text-muted">3 hours ago</small></div></div>
+        <div class="alert-item danger"><i class="bi bi-cloud-rain fs-5 text-danger"></i><div><strong>Weather Alert</strong><p class="mb-0 small">Rain expected. Possible 15 min delays</p><small class="text-muted">30 mins ago</small></div></div>
+    `;
+}
+
+function updateTrackingList() {
+    const div = document.getElementById('trackingBusList');
+    div.innerHTML = activeBuses.map(b => `
+        <div class="bus-item" onclick="map.setView([${b.lat},${b.lng}],16)">
+            <div class="d-flex justify-content-between">
+                <span class="bus-route-number" style="background:${b.route.color}">${b.route.number}</span>
+                <span class="crowd-indicator crowd-${b.crowd}">👥 ${b.crowd}</span>
+            </div>
+            <div class="mt-1"><strong>${b.route.name}</strong></div>
+            <div class="bus-details">
+                <span>📍 ${b.stop.name}</span>
+                <span>⏱️ ${b.eta} min</span>
+            </div>
+            ${b.delayed ? '<div class="text-danger small">⚠️ Delayed</div>' : '<div class="text-success small">✅ On Time</div>'}
+        </div>
+    `).join('');
+}
+
+function bookTicket(busId) {
+    const bus = activeBuses.find(b => b.id === busId) || { route: routes[0], stop: stops[0] };
+    const fare = Math.floor(Math.random() * 40) + 15;
+    
+    document.getElementById('bookingModalBody').innerHTML = `
+        <div class="ticket-visual mb-3">
+            <h5>🎫 E-Ticket</h5>
+            <p class="mb-1">Route: <b>${bus.route?.number || busId}</b></p>
+            <p class="mb-1">From: <b>${bus.stop?.name || 'Chatram'}</b></p>
+            <p class="mb-1">Type: <b>${bus.route?.type || 'Ordinary'}</b></p>
+            <h4 class="mt-2">₹${fare}</h4>
+        </div>
+        <div class="mb-2"><label class="form-label">Name</label><input class="form-control" placeholder="Your name"></div>
+        <div class="mb-2"><label class="form-label">Phone</label><input class="form-control" value="+91 "></div>
+        <div class="mb-3"><label class="form-label">Payment</label>
+            <select class="form-select">
+                <option>UPI (Google Pay / PhonePe)</option>
+                <option>Credit/Debit Card</option>
+                <option>Net Banking</option>
+            </select>
+        </div>
+        <button class="btn btn-success w-100 rounded-pill" onclick="alert('✅ Ticket Confirmed!\\nHappy Journey! 🚌'); bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();">
+            Pay ₹${fare} & Confirm
+        </button>
+    `;
+    new bootstrap.Modal(document.getElementById('bookingModal')).show();
+}
+
+function swapStops() {
+    const s = document.getElementById('sourceInput');
+    const d = document.getElementById('destinationInput');
+    [s.value, d.value] = [d.value, s.value];
+}
+
+function simulateVoice(type) {
+    const input = document.getElementById(type === 'source' ? 'sourceInput' : 'destinationInput');
+    const random = stops[Math.floor(Math.random() * stops.length)];
+    input.value = random.name;
+    input.style.background = '#fffde7';
+    setTimeout(() => { input.style.background = ''; }, 500);
+}
+
+function switchLang(lang) {
+    document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+    document.getElementById('btnTA').classList.toggle('active', lang === 'ta');
+}
+
+// Setup autocomplete
+function setupAutocomplete(inputId, suggId) {
+    const input = document.getElementById(inputId);
+    const sugg = document.getElementById(suggId);
+    if (!input || !sugg) return;
+    
+    input.addEventListener('input', function() {
+        const val = this.value.toLowerCase();
+        sugg.innerHTML = '';
+        if (val.length < 1) { sugg.classList.remove('show'); return; }
+        
+        const filtered = stops.filter(s => s.name.toLowerCase().includes(val) || s.tamil.includes(val));
+        if (filtered.length > 0) {
+            filtered.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.innerHTML = `<i class="bi bi-geo-alt"></i><span>${s.name}</span><small>${s.landmark}</small>`;
+                div.onclick = () => { input.value = s.name; sugg.classList.remove('show'); };
+                sugg.appendChild(div);
+            });
+            sugg.classList.add('show');
+        } else {
+            sugg.classList.remove('show');
+        }
+    });
+    
+    document.addEventListener('click', e => {
+        if (!input.contains(e.target) && !sugg.contains(e.target)) sugg.classList.remove('show');
+    });
+}
+
+// Quick stops
+function loadQuickStops() {
+    const div = document.getElementById('quickStops');
+    if (!div) return;
+    const quick = ['Chatram Bus Stand','Central Bus Stand','Srirangam','Thillai Nagar','Airport','BHEL'];
+    div.innerHTML = quick.map(s => 
+        `<span class="badge bg-light text-dark me-1 mb-1" style="cursor:pointer;font-size:0.75rem;" 
+        onclick="document.getElementById('sourceInput').value='${s}';document.getElementById('destinationInput').focus();">${s}</span>`
+    ).join('');
+}
+
+// Initialize everything
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚌 Trichy Smart Bus Tracker Starting...');
+    initMap();
+    setupAutocomplete('sourceInput', 'sourceSuggestions');
+    setupAutocomplete('destinationInput', 'destinationSuggestions');
+    loadRoutes();
+    loadAlerts();
+    loadQuickStops();
+    console.log('✅ All systems ready!');
+});
+</script>
 
 </body>
 </html>
